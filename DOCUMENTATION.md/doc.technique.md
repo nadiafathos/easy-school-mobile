@@ -78,3 +78,33 @@ POST /auth/login
 • APK / AAB généré pour installation
 🌐 Web
 • Build via
+
+## 📁 Navigation interne — `_layout.js`
+
+Le fichier `_layout.js` placé dans `app/(app)/` configure la navigation par onglets via `Tabs` de `expo-router`.
+
+Chaque `<Tabs.Screen>` correspond à un fichier du même nom dans le dossier `(app)`.
+
+Exemple :
+
+- `<Tabs.Screen name="children" />` → `children.js`
+
+Cette architecture permet une navigation claire, modulaire et évolutive.
+
+### 🔐 Client API (axios + SecureStore)
+
+Le client API utilise deux intercepteurs :
+
+#### Intercepteur de requêtes
+
+- Récupère le token via SecureStore
+- Vérifie son expiration
+- Ajoute `Authorization: Bearer <token>`
+- Redirige vers login si expiré
+
+#### Intercepteur de réponses
+
+- Supprime le token en cas d'erreur 401/403
+- Redirige vers login
+
+Ce système centralise toute la logique d'authentification et sécurise les appels API.
