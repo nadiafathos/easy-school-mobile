@@ -1,55 +1,43 @@
 /**
  * ---------------------------------------------------------
- * Fichier : app/auth/login.js
+ * Fichier : app/auth/register.js
  * ---------------------------------------------------------
  * Rôle :
- *  - Connexion utilisateur (parent / professeur / admin)
- *  - Appel API via authService
- *  - Redirection selon le rôle
+ *  - Permettre au parent de créer un compte
+ *  - UI harmonisée avec login.js
+ *  - Bouton retour cliquable
+ *  - Appel API via authService (plus propre que axios)
  * ---------------------------------------------------------
  */
 
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import authService from "../../services/authService";
+import apiClient from "../../services/apiClient";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     setError("");
 
     try {
-      const user = await authService.login(email, password);
+      // 🔵 Appel API via apiClient (authService ne gère que login/logout)
+      const response = await apiClient.post("/auth/register", {
+        name,
+        email,
+        password,
+      });
 
-      console.log("Utilisateur connecté :", user);
-
-      // 🔵 Redirection selon le rôle
-      if (user.role === "parent") {
-        router.replace("/child");
-        return;
+      if (response.data.success) {
+        router.replace("/auth/login");
       }
-
-      if (user.role === "enseignant"){
-        router.replace("/teacher");
-        return;
-      }
-
-      if (user.role === "admin") {
-        router.replace("/admin");
-        return;
-      }
-
-      // Si le rôle n'est pas reconnu
-      setError("Rôle non reconnu, contactez l'administrateur");
-
     } catch (err) {
-      console.log("Erreur login :", err);
       const serverMsg = err.response?.data?.message;
-      setError(serverMsg || "Email ou mot de passe incorrect");
+      setError(serverMsg || "Impossible de créer le compte");
     }
   };
 
@@ -64,7 +52,14 @@ export default function LoginScreen() {
         <Text style={styles.backText}>← Retour</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>Connexion</Text>
+      <Text style={styles.title}>Créer un compte</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Nom complet"
+        value={name}
+        onChangeText={setName}
+      />
 
       <TextInput
         style={styles.input}
@@ -84,14 +79,12 @@ export default function LoginScreen() {
 
       {error !== "" && <Text style={styles.error}>{error}</Text>}
 
-      {/* 🔵 Bouton Se connecter */}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Se connecter</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>S'inscrire</Text>
       </TouchableOpacity>
 
-      {/* 🔗 Lien vers inscription */}
-      <TouchableOpacity onPress={() => router.push("/auth/register")}>
-        <Text style={styles.link}>Pas encore de compte ? Créer un compte</Text>
+      <TouchableOpacity onPress={() => router.push("/auth/login")}>
+        <Text style={styles.link}>Déjà un compte ? Se connecter</Text>
       </TouchableOpacity>
 
     </View>
@@ -100,7 +93,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", padding: 20 },
-  
+
   backButton: {
     position: "absolute",
     top: 40,

@@ -1,107 +1,144 @@
-# 📘 Documentation du développement de l'application Easy School
+L’application Easy School permet aux parents et enseignants de :
+• consulter les enfants associés à leur compte
+• consulter les repas et réserver
+• consulter les devoirs
+• consulter les événements et gérer la participation
+• se connecter via un système sécurisé JWT
+• naviguer facilement grâce à Expo Router.
+J’ai utilisé Expo Router pour la navigation, Axios pour les appels API, et SecureStore pour stocker le token JWT de manière sécurisée.
 
-## 🎯 Objectif du projet
+voici l'architecture minimale du projet:
 
-Développer une application mobile destinée aux parents et enseignants pour gérer :
+app/
+│
+├── index.js
 
-- les enfants
-- les repas
-- les événements
-- les devoirs
-- l’authentification sécurisée
+            → Vérification du token + redirection
 
-L’application est construite avec **React Native**, **Expo**, et **Expo Router**.
+├── \_layout.js
+→ Layout global Expo Router
+│
+├── auth/
+│ └── login.js
 
----
+                      → Écran de connexion
 
-# 🧱 1. Mise en place de la base technique
+│
+├── screens/
+│ ├── HomeScreen.js
+│ ├── ChildrenScreen.js
+│ ├── ChildDetailsScreen.js
+│ ├── MealScreen.js
+│ ├── HomeworkScreen.js
+│ ├── EventScreen.js
+│ ├── SchoolScreen.js  
+ ← Nouveau
+│ ├── AttendanceScreen.js ← Nouveau
+│ └── NotificationScreen.js ← Nouveau
+│
+└── services/
+├── apiClient.js
+├── schoolService.js
+├── attendanceService.js
+└── notificationService.js
 
-- Initialisation du projet Expo
-- Configuration d’Expo Router
-- Création de la structure du dossier `app/`
-- Mise en place du fichier `App.js`
-- Création du fichier `app/index.js`
-- Test du backend via `API_URL`
+    5. 📱 Description des écrans
 
----
+🏠 HomeScreen
+Affiche les sections principales :
+• Enfants
+• Repas
+• Devoirs
+• Événements
+• ecole
+•Presence
+•Notifications
 
-# 🔐 2. Authentification (Login)
+Navigation via Expo Router :
 
-- Création de l’écran `LoginScreen`
-- Appel API `/auth/login`
-- Gestion des erreurs
-- Stockage du token avec `expo-secure-store`
-- Redirection vers l’espace connecté
+ChildrenScreen
+Fonctionnalités :
+• Récupère les enfants du parent connecté
+• Affiche la liste
+• Permet d’aller vers les détails d’un enfant (optionnel)
+API utilisée :
+GET /children
 
----
+🍽️ MealScreen
+Fonctionnalités :
+• Liste des repas
+• Réservation d’un repas
+• Indication des allergènes
+API :
+GET /meals
+POST /reservation-meals
 
-# 🧭 3. Navigation interne (layout + tabs)
+📚 HomeworkScreen
+Fonctionnalités :
+• Liste des devoirs par classe
+• Affichage des détails
+• Téléchargement éventuel d’un fichier
+API :GET /homeworks
 
-- Création du layout `(app)/_layout.js`
-- Mise en place d’une navigation par onglets :
-  - Accueil
-  - Enfants
-  - Repas
-  - Événements
-  - Devoirs
-
----
-
-# 🏠 4. Dashboard (Accueil interne)
-
-- Affichage du message de bienvenue
-- Récupération des informations utilisateur
-- Aperçu des repas / événements du jour
-
----
-
-# 👶 5. Module Enfants (Children)
-
-- Liste des enfants
-- Détails d’un enfant
-- Appel API `/children`
-- Gestion des erreurs
-
----
-
-# 🍽️ 6. Module Repas (Meals)
-
-- Liste des repas
-- Réservation / annulation
-- Appel API `/meals` et `/reservationMeal`
-
----
-
-# 🎉 7. Module Événements (Events)
+EventScreen
 
 - Liste des événements
 - Participation
-- Appel API `/events` et `/participationEvent`
+- API :
+- GET /events
+- POST /events/:id/participation
 
----
+🏫 SchoolScreen (NOUVEAU)
 
-# 📚 8. Module Devoirs (Homework)
+- Liste des écoles
+- API : GET /schools
+  🧍 AttendanceScreen (NOUVEAU)
+- Marquer présence / absence / retard
+- Historique
+- API :
+- POST /attendance
+- GET /attendance/:childId
 
-- Liste des devoirs
-- Détails
-- Appel API `/homework`
+🔔 NotificationScreen (NOUVEAU)
 
----
+- Liste des notifications
+- API :
+- GET /notifications
+- POST /notifications
 
-# 🎨 9. Finitions & UX
+GESTIO DES ROLES:
 
-- Harmonisation des couleurs
-- Icônes
-- Messages d’erreur clairs
-- Écrans de chargement
-- Nettoyage du code
+Admin/administration :
+gère école,classes,utilisateurs, enseignants
+Enseignant:
+gère devoir,évenements,notifications et présence
+Parent:
+consulte enfants,repas,devoirs evenements et notifications
 
----
+🛠️ Services – apiClient.js
+J’ai centralisé toute la logique API dans un seul fichier.
+Fonctionnalités :
+• baseURL
+• ajout automatique du token
+• gestion des erreurs
+• redirection automatique en cas de token expiré
 
-# 🧪 10. Tests & Préparation jury
+🧪 Tests manuels
+J’ai testé :
+• la connexion
+• la redirection automatique
+• les appels API
+• la navigation
+• les réservations
+• les participations
+• l’affichage des listes
 
-- Tests sur Android
-- Tests sur Web
-- Vérification API
-- Documentation complète
-- Préparation de la soutenance
+📦 Conclusion
+En tant que développeuse junior, ce projet m’a permis de :
+• comprendre la structure d’une application mobile
+• gérer une authentification sécurisée
+• consommer une API REST
+• organiser un projet React Native proprement
+• utiliser Expo Router
+• gérer des rôles utilisateurs
+• structurer une documentation technique complète

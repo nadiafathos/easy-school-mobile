@@ -1,62 +1,225 @@
-## 🔐 Étape 2 — Création de l'écran Login
+1. Introduction du projet
+   Easy School est une application mobile destinée aux écoles primaires.
+   Elle permet aux parents et aux enseignants de gérer facilement :
+   • les enfants
+   • les repas et les réservations
+   • les devoirs
+   • les événements scolaires
+   • la participation des enfants
+   L’objectif principal est de centraliser les informations scolaires dans une interface simple, moderne et intuitive.
+   En tant que développeuse junior, j’ai structuré mon travail en plusieurs étapes afin d’assurer une progression claire et cohérente.
 
-J'ai créé l'écran `LoginScreen` dans `app/(auth)/login.js`.  
-Cet écran constitue la base du système d'authentification de l'application Easy School.
+🧩 2. Objectifs du projet
+🎯 Objectif général
+Développer une application mobile fonctionnelle, connectée à une API sécurisée, permettant aux utilisateurs de consulter et gérer les informations scolaires.
+🎯 Objectifs spécifiques
+• Mettre en place une authentification sécurisée (JWT + SecureStore)
+• Créer une architecture frontend propre avec Expo Router
+• Développer un backend complet (Node.js, Express, PostgreSQL)
+• Gérer les rôles utilisateurs (admin, parent, enseignant)
+• Implémenter les écrans principaux : enfants, repas, devoirs, événements
+• Assurer la cohérence entre frontend et backend
+• Rédiger une documentation technique complète
 
-### Fonctionnalités implémentées :
+🏗️ 3. Architecture globale
+🔹 Frontend
+• React Native (Expo)
+• Expo Router
+• Axios
+• SecureStore
+• Structure modulaire par écrans
+🔹 Backend
+• Node.js + Express
+• Sequelize ORM
+• PostgreSQL
+• JWT + Bcrypt
+• Middlewares d’authentification et d’autorisation
 
-- Champ email
-- Champ mot de passe
-- Vérification des champs vides
-- Bouton de connexion
-- Fonction `handleLogin()` prête à être connectée à l'API `/auth/login`
+📅 4. Découpage en phases (Sprints)
+🟦 Phase 1 – Analyse & Conception
+• Analyse des besoins
+• Définition des rôles utilisateurs
+• Conception du MCD / MLD
+-elaborations des diagrammes (sequences,)
+• Conception des modèles Sequelize
+• Définition des routes API
+• Structure du projet frontend
+Livrables :
+• MCD / MLD
+• Liste des routes
+• Structure initiale du projet
 
-### Objectif :
+🟩 Phase 2 – Backend
+• Mise en place du serveur Express
+• Connexion PostgreSQL
+• Création des modèles Sequelize
+• Associations entre les tables
+• Création des routes CRUD
+• Authentification JWT
+• Gestion des rôles (admin, parent, enseignant)
+Livrables :
+• API fonctionnelle
+• Authentification opérationnelle
+• Documentation API
 
-Permettre à l'utilisateur de saisir ses identifiants avant d'envoyer une requête au backend.  
-Cette étape prépare l'intégration de l'API d'authentification et la gestion du token.
+🟧 Phase 3 – Frontend
+• Mise en place d’Expo Router
+• Création des écrans :
+• Login
+• Home
+• Children
+• Meals
+• Homeworks
+• Events
+• Mise en place d’apiClient.js
+• Gestion du token (SecureStore)
+• Navigation conditionnelle (si token → Home)
+Livrables :
+• Application mobile fonctionnelle
+• Navigation fluide
+• Appels API opérationnels
 
-## 📱 Étape 4 — Mise en place de la navigation interne avec `_layout.js`
+🟪 Phase 4 – Intégration & Tests
+• Tests manuels des écrans
+• Vérification des appels API
+• Vérification des rôles utilisateurs
+• Correction des bugs
+• Amélioration de l’UX
+Livrables :
+• Version stable de l’application
+• Tests validés
 
-J'ai créé un fichier `_layout.js` dans `app/(app)/`.  
-Ce fichier contrôle toute la navigation interne de l'application après la connexion.
+🟫 Phase 5 – Documentation & Présentation
+• Rédaction du README
+• Documentation technique backend
+• Documentation frontend
+• Plan de développement
+• Préparation de la présentation finale
+Livrables :
+• Documentation complète
+• Projet prêt pour le jury
 
-### Rôle de `_layout.js` :
+🧠 5. Gestion des rôles et responsabilités (RACI)
 
-- Définir la barre d'onglets (Tabs)
-- Associer chaque onglet à un écran :
-  - `index.js` → Accueil
-  - `children.js` → Enfants
-  - `meals.js` → Repas
-  - `events.js` → Événements
-  - `homework.js` → Devoirs
+🧪 6. Tests réalisés
+• Connexion / déconnexion
+• Stockage du token
+• Redirection automatique
+• Appels API (CRUD)
+• Navigation Expo Router
+• Réservation repas
+• Participation événements
+• Affichage des devoirs
+• Gestion des erreurs (401, 404)
 
-  j'ajouterai les autres ecrans plustard. j'essaie d'avoir un api fonctionnel et simple.
+📦 7. Technologies utilisées
+Frontend
+• React Native (Expo)
+• Expo Router
+• Axios
+• SecureStore
+Backend
+• Node.js
+• Express
+• Sequelize
+• PostgreSQL
+• JWT
+• Bcrypt
 
-Expo Router utilise la structure des fichiers pour générer automatiquement la navigation.  
-`_layout.js` agit comme un "plan" qui organise les écrans internes.
+📝 8. Conclusion
+Ce projet m’a permis de :
+• comprendre la structure d’une application mobile complète
+• mettre en place une API sécurisée
+• gérer des rôles utilisateurs
+• organiser un projet de manière professionnelle
+• rédiger une documentation technique complète
+• améliorer mes compétences en React Native et Node.js
+En tant que développeuse junior, ce projet a été une expérience très formatrice et m’a permis de renforcer ma logique, ma rigueur et ma capacité à structurer un projet de A à Z.
 
-## 🔄 Étape 5 — Gestion de la redirection automatique (app/index.js)
+─────────────────────────────────────────────┐
+│ UI Layer │
+│ (Screens React Native + Expo Router) │
+│ │
+│ - HomeScreen │
+│ - ChildrenScreen
 
-J'ai modifié `app/index.js` pour qu'il devienne un écran de redirection.  
-Son rôle est de vérifier si un token JWT est stocké dans `expo-secure-store`.
+                      │
 
-### Fonctionnement :
+│ - MealScreen │
+│ - HomeworkScreen │
+│ - EventScreen │
+│ - SchoolScreen │
+│ - AttendanceScreen │
+│ - NotificationScreen │
+└──────────────────────────────────────────────┘
+│
+▼
+┌──────────────────────────────────────────────┐
+│ Services Layer │
+│ (Appels API centralisés + logique métier) │
+│ │
+│ - apiClient.js │
+│ - childrenService.js │
+│ - mealService.js │
+│ - homeworkService.js │
+│ - eventService.js │
+│ - schoolService.js │
+│ - attendanceService.js │
+│ - notificationService.js │
+└──────────────────────────────────────────────┘
+│
+▼
+┌──────────────────────────────────────────────┐
+│ Secure Storage Layer │
+│ │
+│ - SecureStore (token JWT) │
+└──────────────────────────────────────────────┘
+│
+▼
+┌──────────────────────────────────────────────┐
+│ Backend API │
+│ (Node.js + Express + PostgreSQL) │
+└──────────────────────────────────────────────┘
 
-- Si un token existe → redirection vers `(app)` (espace connecté)
-- Si aucun token → redirection vers `(auth)/login`
-- Un loader est affiché pendant la vérification
+┌──────────────┐
+│ index.js │
+│ (check token) │
+└───────┬──────┘
+│
+┌──────────────────┴──────────────────┐
+▼ ▼
+┌──────────────┐ ┌────────────────┐
+│ auth/login │ │ HomeScreen │
+└───────┬──────┘ └───────┬────────┘
+│ │
+│ │
+│ │
+▼ ▼
+┌──────────────────────────────┐ ┌──────────────────────────────┐
+│ ChildrenScreen │ │ MealScreen │
+└──────────────────────────────┘ └──────────────────────────────┘
 
-Cette étape permet de gérer automatiquement l'état de connexion de l'utilisateur.
+┌──────────────────────────────┐ ┌──────────────────────────────┐
+│ HomeworkScreen │ │ EventScreen │
+└──────────────────────────────┘ └──────────────────────────────┘
 
-## 🔐 Mise en place d'un client API centralisé (apiClient)
+┌──────────────────────────────┐ ┌──────────────────────────────┐
+│ SchoolScreen │ │ AttendanceScreen │
+└──────────────────────────────┘ └──────────────────────────────┘
 
-J'ai créé un fichier `services/apiClient.js` qui contient une instance Axios configurée pour :
+┌──────────────────────────────┐
+│ NotificationScreen │
+└──────────────────────────────┘
+🧑‍🏫 Ajout de l’Espace Professeur
+(Section prête à intégrer dans ton README)
+🎯 Rôle de l’espace professeur
+L’espace professeur permet aux enseignants de :
 
-- ajouter automatiquement le token JWT dans les requêtes
-- vérifier l'expiration du token via jwtDecode
-- supprimer le token si expiré (SecureStore)
-- rediriger vers `(auth)/login` si nécessaire
-- gérer les erreurs API globalement
-
-Toutes les requêtes du front passent désormais par `apiClient`.
+- consulter la liste de leurs classes
+- accéder aux élèves d’une classe
+- encoder les présences
+- publier des devoirs
+- créer des événements
+- envoyer des notifications aux parents
+- consulter les informations scolaires essentielles
+  Cet espace est totalement séparé de l’espace parent, grâce à la gestion des rôles (JWT + middleware).
